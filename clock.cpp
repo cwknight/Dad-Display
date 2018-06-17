@@ -57,7 +57,7 @@ void setup() {
   matrix.begin();
   matrix.setTextWrap(false);
   matrix.setBrightness(3);        //Brightness change here.
-  matrix.setTextColor(colors[0]);
+  matrix.setTextColor(matrix.Color(255,255,255));
 }
  
 int x    = matrix.width();
