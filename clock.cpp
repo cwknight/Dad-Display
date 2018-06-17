@@ -23,7 +23,21 @@ Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(32, 8, 12,      //Put pin number 
   NEO_GRB            + NEO_KHZ800);
  
 const uint16_t colors[] = {
-  matrix.Color(0, 0, 255), matrix.Color(0, 255, 0), matrix.Color(255, 255, 0),matrix.Color(255, 51, 204), matrix.Color(255, 102, 0), matrix.Color(0, 255, 255), matrix.Color(255, 255, 255), matrix.Color(255, 255, 51),};
+  matrix.Color(0, 0, 255), 
+  matrix.Color(0, 255, 0), 
+  matrix.Color(255, 255, 0),
+  matrix.Color(255, 51, 204), 
+  matrix.Color(255, 102, 0), 
+  matrix.Color(0, 255, 255), 
+  matrix.Color(255, 255, 255), 
+  matrix.Color(255, 255, 51),
+  };
+
+uint16_t randomColor(uint16_t colorArray[]){
+    int arrayLength = sizeof(colorArray)/sizeof(*colorArray);
+    int randomIndex = random(0, arrayLength);
+    return colorArray[randomIndex];
+}
  
 void setup() {
   matrix.begin();
@@ -44,8 +58,8 @@ void loop() {
   ) {
     x = matrix.width();
  
-    if(++pass >= 8) pass = 0;          //Change number "8" for how many different color changes needed above at matrix.Color....
-    matrix.setTextColor(colors[pass]);
+           
+    matrix.setTextColor(randomColor(colors));
   }
   matrix.show();
   delay(120);
