@@ -33,10 +33,24 @@ const uint16_t colors[] = {
   matrix.Color(255, 255, 51),
   };
 
-uint16_t randomColor(uint16_t colorArray[]){
-    int arrayLength = sizeof(colorArray)/sizeof(*colorArray);
-    int randomIndex = random(0, arrayLength);
+uint16_t randomColorFromList(uint16_t colorArray[]){
+    int arrayLength = sizeof(colorArray)/sizeof(colorArray[0]);
+    int randomIndex = random(0, arrayLength+1);
     return colorArray[randomIndex];
+}
+
+uint16_t randomColorExceptList(uint16_t colorArray[]){
+    int arrayLength = sizeof(colorArray)/sizeof(*colorArray);
+    int r = random(0,256);
+    int g = random(0,256);
+    int b = random(0,256);
+    uint16_t generatedcolor = matrix.Color(r, g, b);
+    for(int count = 0; 0 <= arrayLength; count++ ){
+        if(generatedcolor == colorArray[count]){
+            return randomColorExceptList(colorArray);
+        }
+    }
+    return generatedcolor;
 }
  
 void setup() {
@@ -58,8 +72,9 @@ void loop() {
   ) {
     x = matrix.width();
  
-           
-    matrix.setTextColor(randomColor(colors));
+           //use randomColorFromList for random choice from list colors[].
+           //use randomColorExceptList for random choice from all possible colors, except on colors[]
+    matrix.setTextColor(randomColorFromList(colors));
   }
   matrix.show();
   delay(120);
