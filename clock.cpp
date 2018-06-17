@@ -35,17 +35,17 @@ const uint16_t colors[] = {
 
 uint16_t randomColorFromList(uint16_t colorArray[]){
     int arrayLength = sizeof(colorArray)/sizeof(colorArray[0]);
-    int randomIndex = random(0, arrayLength+1);
+    int randomIndex = random(0, arrayLength);
     return colorArray[randomIndex];
 }
 
 uint16_t randomColorExceptList(uint16_t colorArray[]){
-    int arrayLength = sizeof(colorArray)/sizeof(*colorArray);
+    int arrayLength = sizeof(colorArray)/sizeof(colorArray[0]);
     int r = random(0,256);
     int g = random(0,256);
     int b = random(0,256);
     uint16_t generatedcolor = matrix.Color(r, g, b);
-    for(int count = 0; 0 <= arrayLength; count++ ){
+    for(int count = 0; 0 < arrayLength; count++ ){
         if(generatedcolor == colorArray[count]){
             return randomColorExceptList(colorArray);
         }
