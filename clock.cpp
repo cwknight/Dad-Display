@@ -39,17 +39,15 @@ const uint16_t colors[] = {
   matrix.Color(255, 255, 51),
   };
 
-uint16_t randomColorAllColors(Adafruit_NeoMatrix *matrixInternal){
-    randomSeed(analogRead(0));  
+uint16_t randomColorAllColors(Adafruit_NeoMatrix *matrixInternal){ 
     int r = random(0,256);
     int g = random(0,256);
     int b = random(0,256);
-    uint16_t generatedcolor = *matrixInternal->Color(g, r, b);
+    uint16_t generatedcolor = matrixInternal->Color(g, r, b);
     return generatedcolor;
 }
 
-uint16_t randomColorFromList(uint16_t colorArray[]){
-    randomSeed(analogRead(0));  
+uint16_t randomColorFromList(uint16_t colorArray[]){ 
     int arrayLength = sizeof(colorArray)/sizeof(uint16_t);
     int randomIndex = random(0, arrayLength);
     return colorArray[randomIndex];
@@ -57,10 +55,10 @@ uint16_t randomColorFromList(uint16_t colorArray[]){
 
 uint16_t randomColorExceptList(uint16_t colorArray[], Adafruit_NeoMatrix *matrixInternal){
     int arrayLength = sizeof(colorArray)/sizeof(uint16_t);
-    uint16_t generatedcolor = randomColorAllColors(&matrixInternal);
+    uint16_t generatedcolor = randomColorAllColors(matrixInternal);
     for(int count = 0; 0 < arrayLength; count++ ){
         if(generatedcolor == colorArray[count]){
-            return randomColorExceptList(colorArray, &matrixInternal);
+            return randomColorExceptList(colorArray, matrixInternal);
         }
     }
     return generatedcolor;
