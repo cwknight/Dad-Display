@@ -68,6 +68,9 @@ uint16_t randomColorExceptList(uint16_t colorArray[], Adafruit_NeoMatrix *matrix
     return generatedcolor;
 }
 int textLength(String input, int spaces){
+    if(spaces < 0){
+        spaces = 0;
+    }
     int output = input.length() * 6 + spaces * 6;
     
     return output;  
@@ -82,15 +85,16 @@ void setup() {
 }
  
 int x    = matrix.width();
+
 String text = "*** 3 Days Until Departure Flight ***"; //Put Text here.
+int spacing = 0; // amount of blank time before message repeat
 
 void loop() {
   matrix.fillScreen(0);
   matrix.setCursor(x, 0);
   matrix.print(F(text));      
- 
- //change the number in textLength(text,#) to adjust the amount of blank space before repeating the message 
-  if(--x < -textLength(text,0)) {
+   
+  if(--x < -textLength(text,spacing)) {
     x = matrix.width();
  
            //use randomColorFromList(colors) for random choice from list colors[].
