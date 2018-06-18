@@ -29,20 +29,24 @@ Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(32, 8, 12,      //Put pin number 
   NEO_GRB            + NEO_KHZ800);
  
 const uint16_t colors[] = {
-  matrix.Color(0, 0, 255), 
-  matrix.Color(0, 255, 0), 
-  matrix.Color(255, 255, 0),
-  matrix.Color(255, 51, 204), 
-  matrix.Color(255, 102, 0), 
-  matrix.Color(0, 255, 255), 
-  matrix.Color(255, 255, 255), 
-  matrix.Color(255, 255, 51),
+    matrix.Color(0,0,0),
+//   matrix.Color(0, 0, 255), 
+//   matrix.Color(0, 255, 0), 
+//   matrix.Color(255, 255, 0),
+//   matrix.Color(255, 51, 204), 
+//   matrix.Color(255, 102, 0), 
+//   matrix.Color(0, 255, 255), 
+//   matrix.Color(255, 255, 255), 
+//   matrix.Color(255, 255, 51),
   };
 
 uint16_t randomColorAllColors(Adafruit_NeoMatrix *matrixInternal){ 
     int r = random(0,256);
     int g = random(0,256);
     int b = random(0,256);
+    if(r+g+b < 255){
+        return randomColorAllColors(matrixInternal);
+    } 
     uint16_t generatedcolor = matrixInternal->Color(g, r, b);
     return generatedcolor;
 }
@@ -63,7 +67,11 @@ uint16_t randomColorExceptList(uint16_t colorArray[], Adafruit_NeoMatrix *matrix
     }
     return generatedcolor;
 }
-
+int textLength(String input, int spaces){
+    int output = input.length() * 6 + spaces * 6;
+    
+    return output;  
+}
  
 void setup() {
   matrix.begin();
@@ -74,15 +82,15 @@ void setup() {
 }
  
 int x    = matrix.width();
-int pass = 0;
- 
+String text = "*** 3 Days Until Departure Flight ***"; //Put Text here.
+
 void loop() {
   matrix.fillScreen(0);
   matrix.setCursor(x, 0);
-  matrix.print(F("*** 3 Days Until Departure Flight ***"));      //Put Text here.
+  matrix.print(F(text));      
  
-  if(--x < -215          //Change for length of Text this is set for approximately 30 characters and spaces
-  ) {
+ //change the number in textLength(text,#) to adjust the amount of blank space before repeating the message 
+  if(--x < -textLength(text,0)) {
     x = matrix.width();
  
            //use randomColorFromList(colors) for random choice from list colors[].
