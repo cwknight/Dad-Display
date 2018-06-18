@@ -1,3 +1,9 @@
+#include <Adafruit_GFX.h>
+#include <Adafruit_NeoMatrix.h>
+#include <Adafruit_NeoPixel.h>
+ 
+#define PIN 12
+
 // MATRIX DECLARATION:
 // Parameter 1 = width of NeoPixel matrix
 // Parameter 2 = height of matrix
@@ -33,31 +39,40 @@ const uint16_t colors[] = {
   matrix.Color(255, 255, 51),
   };
 
+uint16_t randomColorAllColors(Adafruit_NeoMatrix *matrixInternal){
+    randomSeed(analogRead(0));  
+    int r = random(0,256);
+    int g = random(0,256);
+    int b = random(0,256);
+    uint16_t generatedcolor = *matrixInternal->Color(g, r, b);
+    return generatedcolor;
+}
+
 uint16_t randomColorFromList(uint16_t colorArray[]){
-    int arrayLength = sizeof(colorArray)/sizeof(colorArray[0]);
+    randomSeed(analogRead(0));  
+    int arrayLength = sizeof(colorArray)/sizeof(uint16_t);
     int randomIndex = random(0, arrayLength);
     return colorArray[randomIndex];
 }
 
-uint16_t randomColorExceptList(uint16_t colorArray[]){
-    int arrayLength = sizeof(colorArray)/sizeof(colorArray[0]);
-    int r = random(0,256);
-    int g = random(0,256);
-    int b = random(0,256);
-    uint16_t generatedcolor = matrix.Color(r, g, b);
+uint16_t randomColorExceptList(uint16_t colorArray[], Adafruit_NeoMatrix *matrixInternal){
+    int arrayLength = sizeof(colorArray)/sizeof(uint16_t);
+    uint16_t generatedcolor = randomColorAllColors(&matrixInternal);
     for(int count = 0; 0 < arrayLength; count++ ){
         if(generatedcolor == colorArray[count]){
-            return randomColorExceptList(colorArray);
+            return randomColorExceptList(colorArray, &matrixInternal);
         }
     }
     return generatedcolor;
 }
+
  
 void setup() {
   matrix.begin();
   matrix.setTextWrap(false);
   matrix.setBrightness(3);        //Brightness change here.
   matrix.setTextColor(matrix.Color(255,255,255));
+   randomSeed(analogRead(0));
 }
  
 int x    = matrix.width();
@@ -72,9 +87,10 @@ void loop() {
   ) {
     x = matrix.width();
  
-           //use randomColorFromList for random choice from list colors[].
-           //use randomColorExceptList for random choice from all possible colors, except on colors[]
-    matrix.setTextColor(randomColorFromList(colors));
+           //use randomColorFromList(colors) for random choice from list colors[].
+           //use randomColorExceptList(colors, &matrix) for random choice from all possible colors, except in colors[]
+           //use randomColorAllColors(&matrix) for random choice from all possible colors
+    matrix.setTextColor(randomColorAllColors(&matrix));
   }
   matrix.show();
   delay(120);
