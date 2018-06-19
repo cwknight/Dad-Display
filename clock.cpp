@@ -92,7 +92,7 @@ int spacing = 0; // amount of blank time before message repeat
 void loop() {
   matrix.fillScreen(0);
   matrix.setCursor(x, 0);
-  matrix.print(F(text));      
+  matrix.print(text.c_str());      
    
   if(--x < -textLength(text,spacing)) {
     x = matrix.width();
