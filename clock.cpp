@@ -60,7 +60,7 @@ uint16_t randomColorFromList(uint16_t colorArray[]){
 uint16_t randomColorExceptList(uint16_t colorArray[], Adafruit_NeoMatrix *matrixInternal){
     int arrayLength = sizeof(colorArray)/sizeof(uint16_t);
     uint16_t generatedcolor = randomColorAllColors(matrixInternal);
-    for(int count = 0; 0 < arrayLength; count++ ){
+    for(int count = 0; count < arrayLength; count++ ){
         if(generatedcolor == colorArray[count]){
             return randomColorExceptList(colorArray, matrixInternal);
         }
@@ -75,6 +75,15 @@ int textLength(String input, int spaces){
     
     return output;  
 }
+
+int x    = matrix.width();
+
+String text = "*** 3 Days Until Departure Flight ***"; //Put Text here. Cannot exceed 140 characters 
+int spacing = 0; // amount of blank time before message repeat
+char textChars[141];
+
+uint16_t randomColorHolder[140];
+
  
 void setup() {
   matrix.begin();
@@ -82,25 +91,36 @@ void setup() {
   matrix.setBrightness(3);        //Brightness change here.
   matrix.setTextColor(matrix.Color(255,255,255));
    randomSeed(analogRead(0));
-}
- 
-int x    = matrix.width();
+   text.toCharArray(textChars,141);
+   
+for(int count = 0; count < text.length(); count++){
+      randomColorHolder[count] = randomColorAllColors(&matrix);
+  }
 
-String text = "*** 3 Days Until Departure Flight ***"; //Put Text here.
-int spacing = 0; // amount of blank time before message repeat
+}
 
 void loop() {
+    
   matrix.fillScreen(0);
   matrix.setCursor(x, 0);
-  matrix.print(text.c_str());      
+  for(int count = 0; count < text.length(); count++){
+      matrix.setTextColor(randomColorHolder[count]);
+      matrix.print(textChars[count]);
+  }
+//   matrix.print(text.c_str());
+
    
   if(--x < -textLength(text,spacing)) {
     x = matrix.width();
+
+    for(int count = 0; count < text.length(); count++){
+      randomColorHolder[count] = randomColorAllColors(&matrix);
+    }
  
            //use randomColorFromList(colors) for random choice from list colors[].
            //use randomColorExceptList(colors, &matrix) for random choice from all possible colors, except in colors[]
            //use randomColorAllColors(&matrix) for random choice from all possible colors
-    matrix.setTextColor(randomColorAllColors(&matrix));
+    // matrix.setTextColor(randomColorAllColors(&matrix));
   }
   matrix.show();
   delay(120);
