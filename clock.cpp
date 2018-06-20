@@ -89,7 +89,7 @@ const uint16_t colors[] = {
   };
 
 uint16_t colorFromRGB(rgb RGB, Adafruit_NeoMatrix *matrixInternal){
-    return matrixInternal.Color(RGB.g*255,RGB.r*255,RGB.b*255);
+    return matrixInternal->Color(RGB.g*255,RGB.r*255,RGB.b*255);
 }
 
 uint16_t colorFromHSV(hsv HSV, Adafruit_NeoMatrix *matrixInternal){
@@ -99,7 +99,7 @@ uint16_t colorFromHSV(hsv HSV, Adafruit_NeoMatrix *matrixInternal){
 
 
 uint16_t randomColorAllColors(Adafruit_NeoMatrix *matrixInternal){ 
-    hsv HSV = {.h = random(0,361), .s = random(0,11)*0.1, .v = 0.5};
+    hsv HSV = {.h = random(0,361), .s = random(0,11)*0.1, .v = 0.8};
     return colorFromHSV(HSV, matrixInternal);
     
     // int r = random(0,256);
@@ -153,7 +153,7 @@ void setup() {
 }
   matrix.begin();
   matrix.setTextWrap(false);
-  matrix.setBrightness(3);        //Brightness change here.
+  matrix.setBrightness(5);        //Brightness change here.
   matrix.setTextColor(matrix.Color(255,255,255));
    randomSeed(analogRead(0));
    text.toCharArray(textChars,141);
