@@ -154,7 +154,7 @@ void setup() {
   matrix.begin();
   matrix.setTextWrap(false);
   matrix.setBrightness(5);        //Brightness change here.
-  matrix.setTextColor(matrix.Color(255,255,255));
+  matrix.setTextColor(matrix.Color(0,0,0));
    randomSeed(analogRead(0));
    text.toCharArray(textChars,141);
    
@@ -167,9 +167,17 @@ for(int count = 0; count < text.length(); count++){
 void loop() {
     
   matrix.fillScreen(0);
+  drawFastHLine(0, 0, matrix.width(), matrix.Color(231, 124, 176));
+  drawFastHLine(0, 1, matrix.width(), matrix.Color(232, 54, 54));
+  drawFastHLine(0, 2, matrix.width(), matrix.Color(231, 151, 54));
+  drawFastHLine(0, 3, matrix.width(), matrix.Color(231, 231, 55));
+  drawFastHLine(0, 4, matrix.width(), matrix.Color(56, 152, 56));
+  drawFastHLine(0, 5, matrix.width(), matrix.Color(53, 185, 187));
+  drawFastHLine(0, 6, matrix.width(), matrix.Color(91, 48, 155));
+  drawFastHLine(0, 7, matrix.width(), matrix.Color(143, 46, 143));
   matrix.setCursor(x, 0);
   for(int count = 0; count < text.length(); count++){
-      matrix.setTextColor(randomColorHolder[count]);
+      //matrix.setTextColor(randomColorHolder[count]);
       matrix.print(textChars[count]);
   }
 //   matrix.print(text.c_str());
@@ -178,9 +186,9 @@ void loop() {
   if(--x < -textLength(text,spacing)) {
     x = matrix.width();
 
-    for(int count = 0; count < text.length(); count++){
-      randomColorHolder[count] = randomColorAllColors(&matrix);
-    }
+    //for(int count = 0; count < text.length(); count++){
+    //  randomColorHolder[count] = randomColorAllColors(&matrix);
+    //}
  
            //use randomColorFromList(colors) for random choice from list colors[].
            //use randomColorExceptList(colors, &matrix) for random choice from all possible colors, except in colors[]
